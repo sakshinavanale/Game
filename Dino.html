@@ -24,6 +24,27 @@
       margin: 0;
       font-family: sans-serif;
     }
+
+    canvas {
+  display: block;
+  width: 100vw;
+  height: 100vh;
+
+  background-image: url('mezoicera.jpg'); /* Replace with actual path */
+  background-repeat: repeat-x;
+  background-position: 0 0;
+  background-size:  900px 400px;
+
+  animation: scrollBg 10s linear infinite;
+}
+@keyframes scrollBg {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}
   </style>
 </head>
 <body onload="startGame()">
@@ -36,6 +57,8 @@
   <script>
     let dinoImage = new Image();
     dinoImage.src = "Dinosaure.png"; 
+    let startx = 30;
+    let starty = 310;
 
     const myGameArea = {
       canvas: null,
@@ -44,12 +67,14 @@
         this.canvas = document.createElement("canvas");
         this.canvas.width = 900;
         this.canvas.height = 400;
-        this.canvas.style.backgroundImage = "url('mezoicera.jpg')";
-        this.canvas.style.backgroundSize = "cover";
-        this.canvas.style.backgroundRepeat = "no-repeat";
-        this.canvas.style.border = "1px solid #c3c3c3";
-        this.canvas.style.display = "block";
-        this.canvas.style.margin = "20px auto";
+        // this.canvas.style.backgroundImage = "url('mezoicera.jpg')";
+        this.canvas.style.width =   this.canvas.width;
+        this.canvas.style.height =   this.canvas.height;
+
+        // this.canvas.style.backgroundRepeat = "no-repeat";
+        // this.canvas.style.border = "1px solid #c3c3c3";
+        // this.canvas.style.display = "block";
+        // this.canvas.style.margin = "20px auto";
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
 
@@ -73,11 +98,12 @@
     }
 
     function drawDino() {
-      const x = 30;
-      const y = 310;
+      
       const width = 90;
       const height = 90;
-      myGameArea.context.drawImage(dinoImage, x, y, width, height);
+     
+      myGameArea.context.drawImage(dinoImage, startx, starty, width, height);
+
     }
   </script>
 </body>
