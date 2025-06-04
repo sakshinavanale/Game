@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dino-Game</title>
+  <style>
+    .Dino-Game {
+      align-self: flex-start;
+      background-color: rgb(75, 74, 73);
+      flex: auto;
+      border: 1px solid #c3c3c3;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      align-items: center;  
+      padding: 10px;
+    }
+
+    body {
+      background-image: url("rocksWallpaper.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      margin: 0;
+      font-family: sans-serif;
+    }
+  </style>
+</head>
+<body onload="startGame()">
+
+  <div class="Dino-Game">
+    <img src="headerimg.png" alt="Dino Header" style="height: 80px; margin-right: 15px;">
+    <h1>Ultimate Dino-Game!</h1>
+  </div>
+
+  <script>
+    let dinoImage = new Image();
+    dinoImage.src = "Dinosaure.png"; 
+
+    const myGameArea = {
+      canvas: null,
+      context: null,
+      start: function () {
+        this.canvas = document.createElement("canvas");
+        this.canvas.width = 900;
+        this.canvas.height = 400;
+        this.canvas.style.backgroundImage = "url('mezoicera.jpg')";
+        this.canvas.style.backgroundSize = "cover";
+        this.canvas.style.backgroundRepeat = "no-repeat";
+        this.canvas.style.border = "1px solid #c3c3c3";
+        this.canvas.style.display = "block";
+        this.canvas.style.margin = "20px auto";
+        this.context = this.canvas.getContext("2d");
+        document.body.appendChild(this.canvas);
+
+        
+        if (dinoImage.complete) {
+          updateGameArea();
+        } else {
+          dinoImage.onload = updateGameArea;
+        }
+      }
+    };
+
+    function startGame() {
+      myGameArea.start();
+    }
+
+    function updateGameArea() {
+      const ctx = myGameArea.context;
+      ctx.clearRect(0, 0, myGameArea.canvas.width, myGameArea.canvas.height);
+      drawDino();
+    }
+
+    function drawDino() {
+      const x = 30;
+      const y = 310;
+      const width = 90;
+      const height = 90;
+      myGameArea.context.drawImage(dinoImage, x, y, width, height);
+    }
+  </script>
+</body>
+</html>
