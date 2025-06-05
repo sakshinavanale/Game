@@ -78,7 +78,6 @@
         this.context = this.canvas.getContext("2d");
         document.body.appendChild(this.canvas);
 
-        
         if (dinoImage.complete) {
           updateGameArea();
         } else {
@@ -98,10 +97,9 @@
     }
 
     function drawDino() {
-      
       const width = 90;
       const height = 90;
-     
+
       myGameArea.context.drawImage(dinoImage, startx, starty, width, height);
 
     }

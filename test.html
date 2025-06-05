@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dino-Game</title>
+  <style>
+    .Dino-Game {
+      background-color: rgb(75, 74, 73);
+      border: 1px solid #c3c3c3;
+      display: flex;
+      align-content: center;
+      justify-content: center;
+      align-items: center;  
+      padding: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-image: url("rocksWallpaper.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    /*canvas {
+      display: block;
+      width: 100vw;
+      height: 100vh;
+      
+    }*/
+    canvas {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1; /* Behind header if needed */
+      }
+
+    @keyframes scrollBg {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: -100% 0;
+      }
+    }
+  </style>
+</head>
+<body onload="startGame()">
+
+  <div class="Dino-Game">
+    <img src="headerimg.png" alt="Dino Header" style="height: 80px; margin-right: 15px;">
+    <h1>Ultimate Dino-Game!</h1>
+  </div>
+
+  <script>
+    let dinoImage = new Image();
+    dinoImage.src = "Dinosaure.png";
+
+    let bgImage = new Image();
+    bgImage.src = "mezoicera.jpg";
+
+    let bgX = 0;
+    let  scrollspeed = 1;
+
+
+
+    let myGameArea = {
+      canvas: null,
+      context: null,
+      start: function () {
+        this.canvas = document.createElement("canvas");
+        this.context = this.canvas.getContext("2d");
+        document.body.appendChild(this.canvas);
+        this.resize();
+        window.addEventListener("resize", this.resize.bind(this));
+
+        bgImage.onload = () => {
+            if (dinoImage.complete) {
+              updateGameArea();
+            } else {
+              dinoImage.onload = updateGameArea;
+            }
+          };
+        },
+        resize: function () {
+          this.canvas.width = 2000;
+          this.canvas.height = 550;
+        }
+      };
+
+    function startGame() {
+      myGameArea.start();
+      updateGameArea();
+    }
+
+    function updateGameArea() {
+
+      const ctx = myGameArea.context;
+
+      bgX -= scrollspeed;
+      if(bgX <= -myGameArea.canvas.width){
+        bgX = 0;
+      }
+      ctx.clearRect(0, 0, myGameArea.canvas.width, myGameArea.canvas.height);
+      ctx.drawImage(bgImage, bgX, 0, myGameArea.canvas.width, myGameArea.canvas.height);
+      ctx.drawImage(bgImage, bgX + myGameArea.canvas.width, 0, myGameArea.canvas.width, myGameArea.canvas.height);
+    
+      drawDino();
+      requestAnimationFrame(updateGameArea);
+    }
+
+    function drawDino() {
+      //const canvasWidth = myGameArea.canvas.width;
+      //const canvasHeight = myGameArea.canvas.height;
+
+      const dinoWidth = 100;
+      const dinoHeight = 100;
+      const startx = 30;
+      const starty =  myGameArea.canvas.height - dinoHeight - 30;
+
+      myGameArea.context.drawImage(dinoImage, startx, starty, dinoWidth, dinoHeight);
+    }
+  </script>
+</body>
+</html>
