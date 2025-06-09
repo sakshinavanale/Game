@@ -19,34 +19,41 @@
     let radius = 50;
     let angle = 0;
 
+    const ObsWidth = 100;
+    const ObsHeight = 100;
+
+    let melonX = 300;
+    let melonY = 300;
+
+    const cactus = new Image();
+    cactus.src = "angrycactus.png";
+
+    const melon = new Image();
+    melon.src = "smile.png";
+
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
 
     function draw() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw red circle
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2, true);
-      ctx.fillStyle = "red";
-      ctx.fill();
-      ctx.stroke();
-
-      // Draw rotating line inside the circle to show rotation
+      // Rotating cactus
       ctx.save();
       ctx.translate(x, y);
       ctx.rotate(angle);
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(0, -radius); // line from center to top edge
-      //ctx.strokeStyle = "white";
-      //ctx.lineWidth = 3;
-      ctx.stroke();
+      ctx.drawImage(cactus, -ObsWidth / 2, -ObsHeight / 2, ObsWidth, ObsHeight);
+      ctx.restore();
+
+      // Rotating melon
+      ctx.save();
+      ctx.translate(melonX, melonY);
+      ctx.rotate(angle);
+      ctx.drawImage(melon, -ObsWidth / 2, -ObsHeight / 2, ObsWidth, ObsHeight);
       ctx.restore();
     }
 
     function rotate() {
-      angle += 1 * Math.PI / 180; // rotate 2 degrees
+      angle += 1 * Math.PI / 180; 
     }
 
     function move() {
@@ -57,10 +64,12 @@
       }
     }
 
-    window.onload = () => {
+    // Start animation once cactus is loaded
+    cactus.onload = () => {
       draw();
       setInterval(move, 5);
     };
+  
   </script>
 </body>
 </html>
