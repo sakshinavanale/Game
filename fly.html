@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Moving Dino</title>
+  <style>
+    canvas {
+      background-color: rgb(51, 81, 215);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas" width="1500" height="450"></canvas>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const rectWidth = 100;
+    const rectHeight = 80;
+    const speed = 5;
+
+    const flydino = new Image();
+    flydino.src = "openwing.png";
+
+    const flyclose = new Image();
+    flyclose.src = "closewing.png";
+
+    let flydinoX = canvas.width - rectWidth;
+    let flydinoY = 0;
+    let isOpen = true;
+
+    
+   
+    function drawDino() {
+      if (isOpen) {
+        ctx.drawImage(flydino, flydinoX, flydinoY, rectWidth, rectHeight);
+      } else {
+        ctx.drawImage(flyclose, flydinoX, flydinoY, rectWidth, rectHeight);
+      }
+    }
+
+    function moveDino(direction) {
+      if (direction === "left" && flydinoX > 0) {
+        flydinoX -= speed;
+      } else if (direction === "right" && flydinoX + rectWidth < canvas.width) {
+        flydinoX += speed;
+      } else if (direction === "up" && flydinoY > 0) {
+        flydinoY -= speed;
+      } else if (direction === "down" && flydinoY + rectHeight < canvas.height) {
+        flydinoY += speed;
+      }
+    }
+
+    function updateGameArea() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawDino();
+    }
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") moveDino("left");
+      if (e.key === "ArrowRight") moveDino("right");
+      if (e.key === "ArrowUp") moveDino("up");
+      if (e.key === "ArrowDown") moveDino("down");
+      updateGameArea(); 
+    });
+
+    function startGame() {
+      
+      setInterval(updateGameArea, 100);
+    }
+
+   
+    let loadedCount = 0;
+    function imageLoaded() {
+      loadedCount++;
+      if (loadedCount === 2) {
+        startGame();
+      }
+    }
+
+    flydino.onload = imageLoaded;
+    flyclose.onload = imageLoaded;
+
+    
+    if (flydino.complete) imageLoaded();
+    if (flyclose.complete) imageLoaded();
+
+
+     setInterval(() => {
+      isOpen = !isOpen;
+    }, 200);
+//for fly dino to move digonally increase the x and y position of the flydino
+  </script>
+</body>
+</html>
