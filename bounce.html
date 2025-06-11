@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #2b2121;
+    background-color: #d99494;
+}
+</style>
+</head>
+<body>
+<canvas id="myCanvas" width="900" height="400"></canvas>
+<script>
+
+let canvas = document.getElementById("myCanvas");
+let ctx = canvas.getContext("2d");
+
+let x = 30;
+let y = 30;
+let bounceWidth = 100;
+let bounceHeight = 100;
+let speedX = 0;
+let speedY = 0;
+let gravity = 0.05;
+let gravitySpeed = 0;
+
+
+let dinoImage = new Image();
+dinoImage.src = "triceratops.png"; 
+
+function bounce() {
+    gravitySpeed += gravity;
+    x += speedX;
+    y += speedY + gravitySpeed;
+
+    
+    if (y + bounceHeight > canvas.height) {
+        y = canvas.height - bounceHeight;
+        gravitySpeed = -gravitySpeed * 0.7;
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(dinoImage,x, y, bounceWidth, bounceHeight);
+
+
+   
+}
+
+
+
+setInterval(bounce, 10);
+
+</script>
+</body>
+</html>

@@ -17,7 +17,7 @@
     let x = 55;
     let y = 55;
     let radius = 50;
-    let angle = 0;
+    let cactusAngle = 0;
 
     const ObsWidth = 100;
     const ObsHeight = 100;
@@ -25,11 +25,36 @@
     let melonX = 300;
     let melonY = 300;
 
+    let speedX = 0;
+    let speedY = 0;
+    let gravity = 0.1;
+    let gravitySpeed = 0;
+    let bounce = 0.6;
+    let melonAngle = 0;
+
+    let trynoX = 30;
+    let trynoY = 30;
+
+    let bounceWidth = 100;
+    let bounceHeight = 100;
+
     const cactus = new Image();
     cactus.src = "angrycactus.png";
 
     const melon = new Image();
     melon.src = "smile.png";
+
+    let dinoImage = new Image();
+    dinoImage.src = "triceratops.png"; 
+
+    cactus.onload = imageLoaded;
+    melon.onload = imageLoaded;
+    dinoImage.onload = imageLoaded;
+
+
+   if (cactus.complete) imageLoaded();
+   if (melon.complete) imageLoaded();
+   if (dinoImage.complete) imageLoaded();
 
     const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
@@ -40,36 +65,55 @@
       // Rotating cactus
       ctx.save();
       ctx.translate(x, y);
-      ctx.rotate(angle);
+      ctx.rotate(cactusAngle);
       ctx.drawImage(cactus, -ObsWidth / 2, -ObsHeight / 2, ObsWidth, ObsHeight);
       ctx.restore();
 
       // Rotating melon
       ctx.save();
       ctx.translate(melonX, melonY);
-      ctx.rotate(angle);
+      ctx.rotate(melonAngle);
       ctx.drawImage(melon, -ObsWidth / 2, -ObsHeight / 2, ObsWidth, ObsHeight);
       ctx.restore();
+
+      //dino
+      ctx.drawImage(dinoImage,trynoX, trynoY, bounceWidth, bounceHeight);
+    }
+    function update() {
+    // Move cactus
+    if (x < canvas.width - radius) {
+      x += 1;
+      cactusAngle += Math.PI / 180;
     }
 
-    function rotate() {
-      angle += 1 * Math.PI / 180; 
+    // Move melon
+    if (melonX < canvas.width - radius) {
+      melonX += 1;
+      melonAngle += 2 * Math.PI / 180;
     }
 
-    function move() {
-      if (x < canvas.width - radius) {
-        x += 1;
-        rotate();
-        draw();
+    // Bounce dino
+    gravitySpeed += gravity;
+    trynoY += speedY + gravitySpeed;
+
+    if (trynoY + bounceHeight > canvas.height) {
+      trynoY = canvas.height - bounceHeight;
+      gravitySpeed = -gravitySpeed * 0.7;
+    }
+  }
+
+    let loadedCount = 0;
+
+    function imageLoaded(){
+      loadedCount++;
+      if(loadedCount === 3){
+        console.log("Images are loaded!");
+        setInterval(() =>{
+          update();
+          draw();
+        },16);
       }
     }
-
-    // Start animation once cactus is loaded
-    cactus.onload = () => {
-      draw();
-      setInterval(move, 5);
-    };
-  
   </script>
 </body>
 </html>
