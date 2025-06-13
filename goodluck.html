@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dino-Game</title>
+</head>
+<body style="text-align: center;">
+    <canvas id="gameCanvas"  width="900" height="350" style="border: 5px solid gray;"></canvas>
+
+
+</body>
+
+<script>
+    dinoWidth =100
+    dinoHeight = 100
+    dinoX=10
+    dinoY=350-dinoHeight
+
+    let myScore =0;
+  
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    dinomode="R";
+
+
+    document.addEventListener("keydown", (e) => {
+          if (e.key === "ArrowUp") {
+                dinomode="J";
+ 
+          } 
+    });
+
+    
+
+    int=null
+    function startGame() {
+    int =    setInterval(() =>{
+ 
+          updateGameArea();
+          
+     //     drawObs();
+        },10);
+    
+  
+}
+
+
+function move_back(){
+
+    backx --;
+    if(backx==-900)
+    {
+        backx=0;
+    }
+}
+var time=0;
+
+
+function updateGameArea() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  move_back();
+  if(time%600==0)
+  {
+    generate();
+  }
+
+  drawDino();
+    move_obs();
+
+
+  if (time%700 === 0) {  
+  generateflyDino();
+  }
+
+  drawflyDino();
+
+   if(checkgamend())  
+    {
+      clearInterval(int);
+    }
+
+  if (time % 10 === 0) {
+    myScore++;
+  }
+
+  
+  ctx.font = "20px TimesNewRoman";
+  ctx.fillStyle = "black";
+  ctx.fillText("Score: " + myScore, 750, 30);
+   
+
+  time++;
+
+}
+
+
+obs = []
+
+function generate(){
+
+    obs.push({x:900,y:300});
+
+}
+
+endflag=false;
+
+function checkgamend(){
+  if(endflag === true){
+    ctx.font = "bold italic 50px Arial";
+    ctx.strokeText("Game End!",10,80);
+
+  }
+    return endflag;
+    
+};
+function move_obs(){
+//    console.log(obs)
+   for(var i=0;i<obs.length;i++)
+   {
+        var res=obs[i];
+         res.x--;
+
+         //dino dasj 
+         if((res.x>dinoX)&&(res.x<=dinoX+dinoWidth)&& (res.y<=(dinoY+dinoHeight)))
+         {
+           endflag=true;
+           return;
+
+         }
+
+         
+         const cact = new Image();
+         cact.src = "images/angrycactus.png";
+         ctx.drawImage(cact, res.x, res.y, 50, 50);
+  }
+  
+}
+backx=0;
+backy=0
+
+lflag=true;
+runct=0;
+
+
+function drawDino() {
+    const imgback = new Image();
+    imgback.src = "images/mezoicera.jpg";
+    console.log(900-dinoHeight, dinoWidth, dinoHeight)
+    ctx.drawImage(imgback, backx, backy, 900, 350);
+    ctx.drawImage(imgback, backx+900, backy, 900, 350);
+
+    const dinoStand = new Image();
+
+    runct++;//run context
+
+    if(runct==10)
+      {
+        runct=0;
+        lflag=!lflag;
+
+      }
+
+      if(dinomode!='R')
+      {
+        if(dinoY>100 && dinomode!='JD')
+          dinoY-=1;
+        else
+        {
+          dinoY+=1;
+          dinomode='JD'
+          console.log(dinoY+"jd")
+          if(dinoY==(350-dinoHeight))
+              dinomode='R'
+        }
+           
+      }
+
+    if(lflag)
+     dinoStand.src = "images/LeftLeg.png";
+    else
+     dinoStand.src = "images/RightLeg.png";
+
+    ctx.drawImage(dinoStand, dinoX, dinoY, dinoWidth, dinoHeight);
+}
+
+
+let flydinoWidth = 100;
+let flydinoHeight = 80;
+
+let flydinoX = canvas.width - flydinoWidth;
+let flydinoY = 0;
+
+let flyUp = false; 
+flydinosaure = [];
+
+function generateflyDino() {
+  flydinosaure.push({
+    x: 900,
+    y: 300
+  });
+}
+
+
+
+function drawflyDino() {
+    const flydino = new Image();
+
+    runct++;//run context
+    if(runct==10)
+      {
+        runct=0;
+        
+
+      }
+
+      for (let i = 0; i < flydinosaure.length; i++) {
+        let fly = flydinosaure[i];
+        fly.x--; 
+        if (flyUp) {
+          fly.y -= 1;
+        if (fly.y <= 100) {
+          flyUp = false;
+        }
+        } else {
+          fly.y += 1;
+          if (fly.y + flydinoHeight >= canvas.height) {
+            flyUp = true;
+      }
+    }
+    if(flyUp)
+    flydino.src = "images/openwing.png";
+    else
+     flydino.src = "images/closewing.png";
+
+    ctx.drawImage(flydino, fly.x, fly.y, 100, 80);
+
+}
+}
+startGame();
+  
+</script>
+</html>

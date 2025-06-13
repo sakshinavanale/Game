@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dino-Game</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-image: url("rocksWallpaper.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      
+    }
+
+    .Dino-Game {
+      width: 1600px;
+      margin: 0 auto;
+      background-color: rgb(75, 74, 73);
+      border: 1px solid #c3c3c3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      
+     
+    }
+
+    canvas {
+      display: block;
+      width: 1600px;
+      height: 400px;
+      background-image: url('mezoicera.jpg');
+      background-repeat: repeat-x;
+      background-position: 0 0;
+      /*background-size: contain;*/
+      background-size: 100% 100%;
+      animation: scrollBg 10s linear infinite;
+      margin: 0 auto; /* center canvas horizontally */
+      border: 2px solid white;
+    }
+
+    @keyframes scrollBg {
+      0% {
+        background-position: 0 0;
+      }
+      100% {
+        background-position: -1600px 0;
+      }
+    }
+  </style>
+</head>
+<body onload="startGame()">
+
+  <div class="Dino-Game">
+    <img src="headerimg.png" alt="Dino Header" style="height: 80px; margin-right: 15px;">
+    <h1 style="color: white;">Ultimate Dino-Game!</h1>
+  </div>
+
+  <canvas id="gameCanvas" width="1600" height="400"></canvas>
+
+  <script>
+
+
+const Obs1 = new Image();
+Obs1.src = "angrycactus.png";
+
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+const ObsWidth = 60;
+const ObsHeight = 60;
+
+
+let ObsX = 30;
+let ObsY = canvas.height-ObsHeight-10;
+let radius = 20;
+let cactusAngle = 0;
+let obstacles = [];
+
+function generateObs(){
+  obstacles.push({
+    x:0,
+    y:canvas.height - ObsHeight,
+    height:ObsWidth,
+    width:ObsHeight,
+    angle:0
+  });
+
+function update() {
+  for (let i = obstacles.length - 1; i >= 0; i--) {
+    let obs = obstacles[i];
+    obs.x += 1;
+    obs.angle += Math.PI / 180;
+
+    if (obs.x > canvas.width + obs.width) {
+
+    }
+  }
+}
+}
+
+function drawObs() {
+  for(obs in obstacles){
+    ctx.save();
+      ctx.translate(obs.ObsX, obs.ObsY);
+      ctx.rotate(obs.cactusAngle);
+      ctx.drawImage(obs.cactus, obs.-ObsWidth / 2, obs.-ObsHeight / 2, obs.ObsWidth, obs.ObsHeight);
+      ctx.restore();
+
+  }
+}
+
+
+
+
+
+function startGame() {
+  let loadedCount = 0;
+  function imageLoaded() {
+    loadedCount++;
+    if (loadedCount === 4) {
+      generateObstacle();
+      setInterval(generateObstacle,generateInterval);
+      updateGameArea();
+    }
+  }
+  dinoStand.onload = imageLoaded;
+  dinoLeftLeg.onload = imageLoaded;
+  dinoRightLeg.onload = imageLoaded;
+  Obs1.onload = imageLoaded;
+
+  if (dinoLeftLeg.complete) imageLoaded();
+  if (dinoLeftLeg.complete) imageLoaded();
+  if (dinoRightLeg.complete) imageLoaded();
+  if (Obs1.complete) imageLoaded();
+}
+
+
+  </script>
+</body>
+</html>
